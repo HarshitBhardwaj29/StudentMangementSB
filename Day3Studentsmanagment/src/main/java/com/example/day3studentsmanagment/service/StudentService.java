@@ -4,6 +4,8 @@ import com.example.day3studentsmanagment.model.StudentModel;
 import com.example.day3studentsmanagment.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StudentService {
     private StudentRepository repository;
@@ -14,5 +16,22 @@ public class StudentService {
         return repository.save(student);
 
     }
+    public List<StudentModel> getStudent(){
+        return repository.findAll();
+    }
+    //update student
+    public StudentModel updateStudent(String id,StudentModel student){
+        StudentModel existingStudent = repository.findById(id).orElseThrow(()-> new RuntimeException("No student found"));
+        existingStudent.setName(student.getName());
+        existingStudent.setEmail(student.getEmail());
+        existingStudent.setAge(student.getAge());
 
+        return repository.save(existingStudent);
+    }
+    //delete student
+    public void deleteStudent(String id){
+        StudentModel existingStudent = repository.findById(id).orElseThrow(() -> new RuntimeException("No student found"));
+        repository.deleteById(id);
+    }
 }
+
